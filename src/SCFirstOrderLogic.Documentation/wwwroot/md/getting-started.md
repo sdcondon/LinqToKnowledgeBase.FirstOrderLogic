@@ -14,7 +14,7 @@ The first challenge is to write sentences. This can be done in several ways. Thi
 
 The most direct way to express sentences is to directly compose instances of the types found in the top-level `SCFirstOrderLogic` namespace into a tree structure, like this:
 
-```
+```csharp
 using SCFirstOrderLogic;
 
 // Helper methods for creating your predicates (and functions) are recommended to avoid repetition:

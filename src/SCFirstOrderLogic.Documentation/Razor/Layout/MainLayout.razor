@@ -31,11 +31,8 @@
         <MudText Typo="Typo.h5" Class="ml-3">SCFirstOrderLogic</MudText>
         <MudSpacer />
         <MudIconButton Icon="@(DarkLightModeButtonIcon)" Color="Color.Inherit" OnClick="@DarkModeToggle" />
-        <MudIconButton Icon="@Icons.Material.Filled.MoreVert" Color="Color.Inherit" Edge="Edge.End" />
-        <!--
-            <a href="https://www.nuget.org/packages/SCFirstOrderLogic/"><img src="https://img.shields.io/nuget/v/SCFirstOrderLogic.svg?style=flat-square" alt="NuGet version (SCFirstOrderLogic)"/></a>
-            <a href="https://github.com/sdcondon/SCFirstOrderLogic"><img src="img/GitHub-Mark-32px.png" alt="GitHub Repository (SCFirstOrderLogic)"/></a>
-        -->
+        <MudButton Href="https://www.nuget.org/packages/SCFirstOrderLogic/"><MudImage Src="https://img.shields.io/nuget/v/SCFirstOrderLogic.svg?style=flat-square" /></MudButton>
+        <MudIconButton Icon="@Icons.Custom.Brands.GitHub" Href="https://github.com/sdcondon/SCFirstOrderLogic" />
     </MudAppBar>
     <MudDrawer @bind-Open="_drawerOpen" ClipMode="DrawerClipMode.Always" Elevation="2">
         <NavMenu />

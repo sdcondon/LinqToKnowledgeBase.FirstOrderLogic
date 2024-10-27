@@ -1,9 +1,17 @@
-﻿@inherits ComponentBase
+﻿@using Markdig
+@inherits ComponentBase
 @inject HttpClient Http
 
-<MudMarkdown Value="@markdown" OverrideHeaderTypo="OverrideHeaderTypo" />
+<MudMarkdown Value="@markdown" OverrideHeaderTypo="OverrideHeaderTypo" MarkdownPipeline="@markdownPipeline" />
 
 @code {
+    private readonly MarkdownPipeline markdownPipeline = new MarkdownPipelineBuilder()
+        .UseAutoIdentifiers()
+        .UseTaskLists()
+        .UsePipeTables()
+        //.UseBootstrap()
+        .Build();
+
     private string markdown = string.Empty;
 
     [Parameter]
@@ -14,7 +22,7 @@
         markdown = await Http.GetStringAsync(MarkdownUri);
     }
 
-    protected Typo OverrideHeaderTypo(Typo typo)
+    private Typo OverrideHeaderTypo(Typo typo)
     {
         return typo switch
         {
