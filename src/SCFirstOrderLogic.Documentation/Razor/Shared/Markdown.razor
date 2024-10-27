@@ -1,87 +1,27 @@
-﻿<!-- ..because HTML is annoying and Markdig is great.. -->
-@using System.Linq;
-@using Markdig
-@using Markdig.Renderers
-@using Markdig.Renderers.Html
-@using Markdig.Syntax
-@inherits ComponentBase
+﻿@inherits ComponentBase
 @inject HttpClient Http
-@inject NavigationManager Nav
-@inject IJSRuntime JS
 
-@markup
+<MudMarkdown Value="@markdown" OverrideHeaderTypo="OverrideHeaderTypo" />
 
 @code {
-  private MarkupString markup;
+    private string markdown = string.Empty;
 
-  [Parameter]
-  public string? MarkdownUri { get; set; }
+    [Parameter]
+    public string? MarkdownUri { get; set; }
 
-  protected override async Task OnInitializedAsync()
-  {
-    var markdown = await Http.GetStringAsync(MarkdownUri);
-
-    var pipeline = new MarkdownPipelineBuilder()
-        .Use(new Extension(Nav.Uri))
-        .UseAutoIdentifiers()
-        .UseTaskLists()
-        .UsePipeTables()
-        .UseBootstrap()
-        .Build();
-
-    markup = new MarkupString(Markdig.Markdown.ToHtml(markdown, pipeline));
-  }
-
-  protected override void OnAfterRender(bool firstRender)
-  {
-    JS.InvokeVoidAsync("hljs.highlightAll");
-  }
-
-  public class Extension : IMarkdownExtension
-  {
-    private readonly string baseUrl;
-
-    public Extension(string baseUrl) => this.baseUrl = baseUrl;
-
-    public void Setup(MarkdownPipelineBuilder pipeline) { }
-
-    public void Setup(MarkdownPipeline pipeline, IMarkdownRenderer renderer)
+    protected override async Task OnInitializedAsync()
     {
-      var htmlRenderer = renderer as Markdig.Renderers.HtmlRenderer;
-      ////if (htmlRenderer != null)
-      ////{
-      ////  htmlRenderer.BaseUrl = new Uri(baseUrl);
-      ////}
-
-      ObjectRendererCollection? objectRenderers = htmlRenderer?.ObjectRenderers;
-
-      if (objectRenderers != null && !objectRenderers.Contains<PrettyPrintCodeBlockRenderer>())
-      {
-        var codeBlockRenderer = objectRenderers.OfType<CodeBlockRenderer>().SingleOrDefault() ?? new CodeBlockRenderer();
-        objectRenderers.Replace<CodeBlockRenderer>(new PrettyPrintCodeBlockRenderer(codeBlockRenderer));
-      }
-    }
-  }
-
-  class PrettyPrintCodeBlockRenderer : HtmlObjectRenderer<CodeBlock>
-  {
-    private CodeBlockRenderer innerRenderer;
-
-    public PrettyPrintCodeBlockRenderer(CodeBlockRenderer innerRenderer)
-    {
-      this.innerRenderer = innerRenderer;
+        markdown = await Http.GetStringAsync(MarkdownUri);
     }
 
-    protected override void Write(Markdig.Renderers.HtmlRenderer renderer, CodeBlock obj)
+    protected Typo OverrideHeaderTypo(Typo typo)
     {
-      if (obj is FencedCodeBlock fencedCodeBlock)
-      {
-        var attr = obj.TryGetAttributes() ?? new();
-        attr.AddClass("language-csharp");
-        obj.SetAttributes(attr);
-      }
-
-      innerRenderer.Write(renderer, obj);
+        return typo switch
+        {
+            Typo.h1 => Typo.h3,
+            Typo.h2 => Typo.h4,
+            Typo.h3 => Typo.h5,
+            _ => Typo.h6
+        };
     }
-  }
 }
