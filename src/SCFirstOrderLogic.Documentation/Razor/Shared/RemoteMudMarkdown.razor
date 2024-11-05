@@ -9,17 +9,17 @@
         .UseAutoIdentifiers()
         .UseTaskLists()
         .UsePipeTables()
-        //.UseBootstrap()
+        .UseBootstrap()
         .Build();
 
     private string markdown = string.Empty;
 
     [Parameter]
-    public string? MarkdownUri { get; set; }
+    public string? Uri { get; set; }
 
     protected override async Task OnInitializedAsync()
     {
-        markdown = await Http.GetStringAsync(MarkdownUri);
+        markdown = await Http.GetStringAsync(Uri);
     }
 
     private Typo OverrideHeaderTypo(Typo typo)

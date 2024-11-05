@@ -12,20 +12,6 @@
         "font/bootstrap-icons.json",
         "font/bootstrap-icons.min.css"
       ]
-    },
-    {
-      "provider": "unpkg",
-      "library": "@highlightjs/cdn-assets@11.8.0",
-      "destination": "wwwroot/lib/highlightjs/",
-      "files": [
-        "highlight.js",
-        "highlight.min.js",
-        "LICENSE",
-        "package.json",
-        "README.md",
-        "languages/csharp.min.js",
-        "styles/default.min.css"
-      ]
     }
   ]
 }
