@@ -31,6 +31,9 @@ public class SkolemFunctionIdentifier
     /// Gets the original top-level sentence in which the variable was declared.
     /// Intended for use within explanations of query results.
     /// </summary>
+    // TODO-BREAKING-EXTENSIBILITY: arguably a separate responsibility that doesn't belong here?
+    // havent given much thought so far to serialisation, but should probably do so..
+    // Could e.g. have an (optional) converter object that holds the mapping.
     public Sentence OriginalSentence { get; }
 
     /// <summary>
